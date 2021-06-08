@@ -16,7 +16,6 @@
         <item>Forest Canopy</item>
         <item>Deep Space</item>
         <item>Rainstorm</item>
-        <item>White Noise</item>
     </string-array>
 
     <string-array name="duration_array">

@@ -1,5 +1,6 @@
 package com.slapstick.chyme.ui
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ class MeditateFragment : Fragment() {
 
     private var _binding: FragmentMeditateBinding? = null
     private val binding get() = _binding!!
+
+    private var mediaPlayer: MediaPlayer? = MediaPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,8 +83,25 @@ class MeditateFragment : Fragment() {
             .translationX(0F)
             .duration = 600L
 
-        binding.timer.base = SystemClock.elapsedRealtime() + (selectDuration() * 60000 + 0 * 1000)
+        binding.timer.base = SystemClock.elapsedRealtime() + (selectDuration()) * 60000 + 0 * 1000
         binding.timer.start()
+        selectSound()
+    }
+
+    private fun endMeditation() {
+        binding.timer.stop()
+        stopSoundFile()
+        binding.clScreenOne.animate()
+            .alpha(1F)
+            .translationXBy(1200F)
+            .duration = 600L
+        binding.clScreenTwo.animate()
+            .alpha(1F)
+            .translationXBy(1200F)
+            .duration = 600L
+        binding.clScreenThree.animate()
+            .translationXBy(1200F)
+            .duration = 600L
     }
 
     private fun selectDuration(): Long {
@@ -103,23 +123,28 @@ class MeditateFragment : Fragment() {
             "Forest Canopy" -> binding.kbvKenBurnsView.setImageResource(R.drawable.forest)
             "Deep Space" -> binding.kbvKenBurnsView.setImageResource(R.drawable.nebula)
             "Rainstorm" -> binding.kbvKenBurnsView.setImageResource(R.drawable.rain)
-            "White Noise" -> binding.kbvKenBurnsView.setImageResource(R.drawable.paper)
         }
     }
 
-    private fun endMeditation() {
-        binding.timer.stop()
-        binding.clScreenOne.animate()
-            .alpha(1F)
-            .translationXBy(1200F)
-            .duration = 600L
-        binding.clScreenTwo.animate()
-            .alpha(1F)
-            .translationXBy(1200F)
-            .duration = 600L
-        binding.clScreenThree.animate()
-            .translationXBy(1200F)
-            .duration = 600L
+    private fun selectSound() {
+        when (binding.soundSpinner.selectedItem.toString()) {
+            "Wind Chimes" -> playSoundFile(R.raw.wind_chimes)
+            "Oceanfront" -> playSoundFile(R.raw.ocean)
+            "Forest Canopy" -> playSoundFile(R.raw.forest)
+            "Deep Space" -> playSoundFile(R.raw.deep_space)
+            "Rainstorm" -> playSoundFile(R.raw.rain_storm)
+        }
+    }
+
+    private fun playSoundFile(fileName: Int) {
+        mediaPlayer = MediaPlayer.create(context, fileName)
+        mediaPlayer?.start()
+        mediaPlayer?.isLooping = true
+    }
+
+    private fun stopSoundFile() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     override fun onDestroy() {
