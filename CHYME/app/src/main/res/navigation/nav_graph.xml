@@ -9,6 +9,7 @@
         android:id="@+id/meditateFragment"
         android:name="com.slapstick.chyme.ui.MeditateFragment"
         android:label="fragment_meditate"
-        tools:layout="@layout/fragment_meditate" />
+        tools:layout="@layout/fragment_meditate" >
+    </fragment>
 
 </navigation>

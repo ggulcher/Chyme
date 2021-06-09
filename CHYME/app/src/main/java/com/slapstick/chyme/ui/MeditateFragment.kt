@@ -57,13 +57,13 @@ class MeditateFragment : Fragment() {
     private fun entryAnimations() {
         binding.btnEnter.isClickable = false
         binding.clScreenOne.animate()
-            .translationYBy(-500F)
+            .translationYBy(-600F)
             .duration = 1500L
         binding.btnEnter.animate()
             .alpha(0F)
             .duration = 1000L
         binding.clScreenTwo.animate()
-            .translationY(200F)
+            .translationY(-500F)
             .alpha(1F)
             .duration = 1500L
     }
@@ -73,15 +73,16 @@ class MeditateFragment : Fragment() {
 
         binding.clScreenOne.animate()
             .alpha(0F)
-            .translationXBy(-1200F)
-            .duration = 600L
+            .translationYBy(-1000F)
+            .duration = 800L
         binding.clScreenTwo.animate()
             .alpha(0F)
-            .translationXBy(-1200F)
-            .duration = 600L
+            .translationYBy(-1000F)
+            .duration = 800L
         binding.clScreenThree.animate()
-            .translationX(0F)
-            .duration = 600L
+            .alpha(1F)
+            .translationY(0F)
+            .duration = 800L
 
         binding.timer.base = SystemClock.elapsedRealtime() + (selectDuration()) * 60000 + 0 * 1000
         binding.timer.start()
@@ -91,17 +92,19 @@ class MeditateFragment : Fragment() {
     private fun endMeditation() {
         binding.timer.stop()
         stopSoundFile()
+
         binding.clScreenOne.animate()
             .alpha(1F)
-            .translationXBy(1200F)
-            .duration = 600L
+            .translationYBy(1000F)
+            .duration = 800L
         binding.clScreenTwo.animate()
             .alpha(1F)
-            .translationXBy(1200F)
-            .duration = 600L
+            .translationYBy(1000F)
+            .duration = 800L
         binding.clScreenThree.animate()
-            .translationXBy(1200F)
-            .duration = 600L
+            .alpha(0F)
+            .translationY(2000F)
+            .duration = 800L
     }
 
     private fun selectDuration(): Long {
@@ -147,8 +150,16 @@ class MeditateFragment : Fragment() {
         mediaPlayer = null
     }
 
+    @Override
+    override fun onStop() {
+        super.onStop()
+        stopSoundFile()
+        _binding = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        stopSoundFile()
         _binding = null
     }
 
